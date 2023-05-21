@@ -26,7 +26,11 @@ async function run() {
     //await client.connect();
     const toysCollection = client.db("toys").collection("storetoy");
 
-  
+  //load all toys
+  app.get("/toy", async (req, res) => {
+    const result = await toysCollection.find(req.query).limit(20).toArray();
+    res.send(result);
+  });
 
     //post toys
     app.post("/toy", async (req, res) => {
@@ -35,11 +39,7 @@ async function run() {
       res.send(result);
     });
 
-    //load all toys
-    app.get("/toy", async (req, res) => {
-      const result = await toysCollection.find(req.query).limit(20).toArray();
-      res.send(result);
-    });
+    
 
     //update
     app.put("/toy/:id", async (req, res) => {
@@ -92,9 +92,9 @@ async function run() {
       res.send(result);
     });
 	
-//sorting acending data
-app.get("/sort", async (req, res) => {
-      const cursor = toysCollection.find().sort({ price: 1 });
+//sorting decending data
+app.get("/sorts", async (req, res) => {
+      const cursor = toysCollection.find().sort({ price: -1 });
       const result = await cursor.toArray();
       res.send(result);
     });
